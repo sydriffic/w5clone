@@ -162,17 +162,13 @@ public class CardGameManager : MonoBehaviour
 
     void PlayerChoice()
     {
-        //
         
         for(int i = 0; i < playerHand.Count; i ++)
         {
             
             GameObject nextCard = playerHand[i];
             Card cardScript = nextCard.GetComponent<Card>();
-            Vector3 newPos = playerPos.transform.position;
-            cardScript.targetPos = new Vector3((newPos.x + (2*i)), 
-                                    playerPos.transform.position.y,
-                                    playerPos.transform.position.z);
+            
           
             Debug.Log(i + " " + cardScript.mouseOver);
             //Debug.Log(cardScript.faceSprite.name + " lerping Down");

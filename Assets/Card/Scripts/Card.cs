@@ -47,15 +47,15 @@ public class Card : MonoBehaviour
             if(inHand)
             {
                 mouseOver = true;
-                //Debug.Log(this.faceSprite.name + " lerping Up");
+                Debug.Log(this.faceSprite.name + " lerping Up");
                 targetPos = new Vector3((transform.position.x), 
-                                    transform.position.y + 0.1f,
+                                    -2.8f,
                                     transform.position.z);
             }
         }
     }
 
-    void OnMouseLeave()
+    void OnMouseExit()
     {
         if(CardGameManager.state == CardGameManager.GameState.PCHOOSE)
         {
@@ -63,6 +63,9 @@ public class Card : MonoBehaviour
             if(inHand)
             {
                 mouseOver = false;
+                targetPos = new Vector3((transform.position.x), 
+                                    -3f,
+                                    transform.position.z);
             }
         }
     }
