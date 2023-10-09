@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CardGameManager : MonoBehaviour
 {
@@ -46,7 +47,11 @@ public class CardGameManager : MonoBehaviour
             case GameState.PDEAL:
                     DealPlayerCard();
                 break;
+            case GameState.OCHOOSE:
+                    OpponentChoice();
+                break;
             case GameState.PCHOOSE:
+                    PlayerChoice();
                 break;
             case GameState.EVAL:
                 break;
@@ -64,7 +69,7 @@ public class CardGameManager : MonoBehaviour
                 Card cardScript = nextCard.GetComponent<Card>();
                 Vector3 newPos = playerPos.transform.position;
                 cardScript.targetPos = new Vector3((newPos.x + (2f * opponentHand.Count)), 
-                                                    playerPos.transform.position.y + 3f,
+                                                    playerPos.transform.position.y + 5.5f,
                                                     playerPos.transform.position.z);
                 opponentHand.Add(nextCard);
                 DeckManager.deck.Remove(nextCard);
@@ -94,6 +99,8 @@ public class CardGameManager : MonoBehaviour
             cardScript.targetPos = new Vector3((newPos.x + (2f * playerHand.Count)), 
                                     playerPos.transform.position.y,
                                     playerPos.transform.position.z);
+            cardScript.inHand = true;
+            //play audio here
             playerHand.Add(nextCard);
             DeckManager.deck.Remove(nextCard);
             }
@@ -101,8 +108,6 @@ public class CardGameManager : MonoBehaviour
             //reset timer
             timer = maxTimer;
         }
-
-        
 
         //ok so this code is like. play a sound and flip the cards after they've been dealt
         //but idk if this is going to stay that way
@@ -134,11 +139,49 @@ public class CardGameManager : MonoBehaviour
 
     void OpponentChoice()
     {
+        timer --;
+        if(timer <= -35)
+        {
+            if(opponentHand.Count == playerHandCount)
+            {
+                GameObject randCard = opponentHand[Random.Range(0, opponentHand.Count)];
+                Card cardScript = randCard.GetComponent<Card>();
+                Vector3 newPos = playerPos.transform.position;
+                //i should prob set variables for where to go. womp womp
+                cardScript.targetPos = new Vector3((newPos.x + (2)), 
+                                                    playerPos.transform.position.y + 3.5f,
+                                                    playerPos.transform.position.z);
+                //play audio here
+                cardScript.oPlayed = true;
+                state = GameState.PCHOOSE;
+            }
 
+            timer = maxTimer;
+        }
     }
 
     void PlayerChoice()
     {
+        //
+        
+        for(int i = 0; i < playerHand.Count; i ++)
+        {
+            
+            GameObject nextCard = playerHand[i];
+            Card cardScript = nextCard.GetComponent<Card>();
+            Vector3 newPos = playerPos.transform.position;
+            cardScript.targetPos = new Vector3((newPos.x + (2*i)), 
+                                    playerPos.transform.position.y,
+                                    playerPos.transform.position.z);
+          
+            Debug.Log(i + " " + cardScript.mouseOver);
+            //Debug.Log(cardScript.faceSprite.name + " lerping Down");
+        }
 
+
+
+        
     }
+
+    
 }

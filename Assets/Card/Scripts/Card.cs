@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Card : MonoBehaviour
 {
@@ -8,11 +9,11 @@ public class Card : MonoBehaviour
     Sprite backSprite;
 
     public SpriteRenderer myRend;
-    bool mouseOver = false;
+    public bool mouseOver;
 
     public Vector3 targetPos;
 
-    bool inHand, pPlayed, oPlayed;
+    public bool inHand, pPlayed, oPlayed;
 
     void Start()
     {
@@ -21,6 +22,8 @@ public class Card : MonoBehaviour
 
         //targetX = (transform.position.x;
        // targetY = transform.position.y;
+
+       mouseOver = false;
 
         inHand = false;
         pPlayed = false;
@@ -33,15 +36,34 @@ public class Card : MonoBehaviour
         Vector3 newPos = transform.position;
         newPos = Vector3.Lerp(transform.position, targetPos, 0.2f);
         transform.position = newPos;
-        
-        if(mouseOver)
-        {
-            myRend.sprite = faceSprite;
-        }
 
     }
-    void OnMouseDown()
+
+    void OnMouseOver()
     {
-        mouseOver = true;
+        if(CardGameManager.state == CardGameManager.GameState.PCHOOSE)
+        {
+           
+            if(inHand)
+            {
+                mouseOver = true;
+                //Debug.Log(this.faceSprite.name + " lerping Up");
+                targetPos = new Vector3((transform.position.x), 
+                                    transform.position.y + 0.1f,
+                                    transform.position.z);
+            }
+        }
+    }
+
+    void OnMouseLeave()
+    {
+        if(CardGameManager.state == CardGameManager.GameState.PCHOOSE)
+        {
+           
+            if(inHand)
+            {
+                mouseOver = false;
+            }
+        }
     }
 }
