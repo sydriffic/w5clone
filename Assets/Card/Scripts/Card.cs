@@ -59,7 +59,7 @@ public class Card : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     targetPos = new Vector3(-0.3f, 
-                                        -1.2f,
+                                        -1f,
                                         transform.position.z);
                     pPlayed = true;
                     audiosrc.Play();
