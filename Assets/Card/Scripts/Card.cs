@@ -6,14 +6,15 @@ using UnityEngine.UIElements;
 public class Card : MonoBehaviour
 {
     public Sprite faceSprite;
-    Sprite backSprite;
+    public Sprite backSprite;
 
     public SpriteRenderer myRend;
-    public bool mouseOver;
+    public bool mouseOver, mouseClicked;
 
     public Vector3 targetPos;
 
     public bool inHand, pPlayed, oPlayed;
+    AudioSource audiosrc;
 
     void Start()
     {
@@ -24,10 +25,13 @@ public class Card : MonoBehaviour
        // targetY = transform.position.y;
 
        mouseOver = false;
+       mouseClicked = false;
 
         inHand = false;
         pPlayed = false;
         oPlayed = false;
+
+        audiosrc = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -51,7 +55,20 @@ public class Card : MonoBehaviour
                 targetPos = new Vector3((transform.position.x), 
                                     -2.8f,
                                     transform.position.z);
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    targetPos = new Vector3(-0.3f, 
+                                        -1.2f,
+                                        transform.position.z);
+                    pPlayed = true;
+                    audiosrc.Play();
+                    CardGameManager.state = CardGameManager.GameState.EVAL;
+                    Debug.Log(CardGameManager.state);  
+                }
             }
+
+            
         }
     }
 
@@ -66,7 +83,9 @@ public class Card : MonoBehaviour
                 targetPos = new Vector3((transform.position.x), 
                                     -3f,
                                     transform.position.z);
+              
             }
         }
     }
+
 }
